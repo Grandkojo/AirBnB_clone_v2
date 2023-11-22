@@ -125,11 +125,12 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             dictionary = {}
-            for i n range(1, len(args)):
+            for i in range(1, len(args)):
                 if "=" in args[i]:
                     key, value = tuple(args[i].split("="))
                     if value[0] == "\"":
-                        v = v.replace("_", " ").\replace("\\\"", "\"")[1:-1]
+                        value = value.replace("_", " ").\
+                            replace("\\\"", "\"")[1:-1]
                     elif "." in value:
                         try:
                             value = float(value)
@@ -141,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                         except ValueError:
                             continue
                     dictionary[key] = value
-        new_instance = HBNBCommand.classes[args][0]](**dictonary)
+        new_instance = HBNBCommand.classes[args][0](**dictonary)
         new_instance.save()
         storafe.new(new_instance)
         print(new_instance.id)
