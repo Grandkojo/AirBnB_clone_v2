@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.__init__ import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,14 +116,34 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        ars = ars.split(" ")
+        if not args[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        else:
+            dictionary = {}
+            for i n range(1, len(args)):
+                if "=" in args[i]:
+                    key, value = tuple(args[i].split("="))
+                    if value[0] == "\"":
+                        v = v.replace("_", " ").\replace("\\\"", "\"")[1:-1]
+                    elif "." in value:
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            continue
+                    else:
+                        try:
+                            value = int(value)
+                        except ValueError:
+                            continue
+                    dictionary[key] = value
+        new_instance = HBNBCommand.classes[args][0]](**dictonary)
+        new_instance.save()
+        storafe.new(new_instance)
         print(new_instance.id)
         storage.save()
 
