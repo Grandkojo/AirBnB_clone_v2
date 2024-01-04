@@ -1,29 +1,51 @@
 #!/usr/bin/env bash
-#A bash script that sets up servers for deployment
+# This script is used to set up the airbnb clone static page
 
-sudo apt-get update
-sudo apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
+# check if nginx is installed
+sudo apt-get update -y
+sudo apt-get install -y nginx
 
-mkdir -p /data/
-mkdir -p /dat/web_static/
-mkdir -p /data/web_static/releases/
-mkdir -p /data/web_static/shared/
-mkdir -p /data/web_static/releases/test/
-touch /data/web_static/releases/test/index.html
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared
 
-sudo echo "<html>
-	<head>
-	</head>
-	<body>
-		holberton alx
-	</body>
-	</html>" | sudo tee /data/web_static/releases/test/index.html
+# add hello world to the index.html file
+index="/data/web_static/releases/test/index.html"
+sudo touch $index
+echo "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
-sudo ln -s -f /data/web_static/releases/test/ /data/web_Static/current
+# now create a symbolic link
+sudo ln -sf /data/web_static/releases/test /data/web_static/current
 
+# giving ownership of /data folder to ubuntu user
 sudo chown -R ubuntu:ubuntu /data/
 
-sudo sed -i '/listen 80 default_server/a location /hbnb_static {alias /data/web_Static/current/;}' /etc/ngnx/sites-enabled/default
+# serving to hbnb_static
+echo "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root /var/www/html;
+    index index.html;
+    
+    location /hbnb_static {
+        alias /data/web_static/current;
+	autoindex off;
+    }
+    location /redirect_me {
+        return 301 https://youtube.com;
+    }
+    error_page 404 /custom_404.html;
+    location /404 {
+        root /var/www/html;
+	internal;
+    }
+}" | sudo tee /etc/nginx/sites-available/default
 
-sudo servce ngninx restart 
+# now restart the server
+sudo service nginx restart

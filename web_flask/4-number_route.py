@@ -28,7 +28,7 @@ def python(text):
     return f"Python {text.replace('_', ' ')}"
 
 
-@app.route("/number/<int:n>", strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
     return f"{n} is a number"
 
