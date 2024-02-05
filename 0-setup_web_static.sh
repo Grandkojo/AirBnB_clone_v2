@@ -38,14 +38,14 @@ echo "server {
 	autoindex off;
     }
     location /redirect_me {
-        return 301 https://youtube.com;
+        return 301 https://github.com/Grandkojo;
     }
     error_page 404 /custom_404.html;
     location /404 {
         root /var/www/html;
 	internal;
     }
-}" | sudo tee /etc/nginx/sites-available/default
+}" | sudo tee /etc/nginx/sites-enabled/default
 
 # now restart the server
 sudo service nginx restart
