@@ -6,8 +6,9 @@ from datetime import datetime
 from fabric.api import env, put, run
 
 
-env.hosts = ["54.160.68.240", "34.232.71.122"]
+env.hosts = ["54.172.97.211", "52.91.154.145"]
 env.user = 'ubuntu'
+env.key_filename = "~/.ssh/school"
 
 
 def do_deploy(archive_path):
